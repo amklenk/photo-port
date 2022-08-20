@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-
-// import photo from '../../assets/small/commercial/0.jpg';
+import Modal from '../Modal';
 
 function PhotoList({ category }){
+    const [currentPhoto, setCurrentPhoto] = useState();
+
+    // this hook manages whether the modal is open or not
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [photos] = useState([
         {
           name: 'Grocery aisle',
@@ -105,14 +109,21 @@ function PhotoList({ category }){
     // have the same category as the one the user selects from the nav
       const currentPhotos = photos.filter((photo) => photo.category === category);
 
+      const toggleModal = (image, i) => {
+        setCurrentPhoto({...image, index: i});
+        setIsModalOpen(true);
+      }
+
     return (
         <div>
+          {isModalOpen && <Modal currentPhoto={currentPhoto}/>}
             <div className="flex-row">
         {currentPhotos.map((image, i) => (
           <img
             src={require(`../../assets/small/${category}/${i}.jpg`)}
             alt={image.name}
             className="img-thumbnail mx-1"
+            onClick={() => toggleModal(image, i)}
             key={image.name}
           />
         ))}
