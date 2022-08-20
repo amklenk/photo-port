@@ -5,6 +5,9 @@ import Gallery from './components/Gallery';
 import ContactForm from './components/Contact';
 
 function App() {
+  // state for contact rendering, set to false so won't render unless clicked on
+  const [contactSelected, setContactSelected] = useState(false);
+
   // initialize the category state as an array, useState so we can change things going forward
   const [categories] = useState([
     {
@@ -24,11 +27,20 @@ function App() {
       categories={categories}
       setCurrentCategory={setCurrentCategory}
       currentCategory={currentCategory}
+      contactSelected={contactSelected}
+      setContactSelected={setContactSelected}
       />
       <main>
-        <ContactForm/>
+        {/* if the contact isn't selected, render the gallery and about */}
+        {!contactSelected ? (
+          <>
         <Gallery currentCategory={currentCategory}/>
         <About/>
+          </>
+        ):(
+          // otherwise render the contact form
+        <ContactForm/>
+        )}
       </main>
     </div>
   );
